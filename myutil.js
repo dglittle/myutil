@@ -63,10 +63,15 @@ function getUrlParams(url) {
         url = window.location.href
     }
     var params = {}
-    foreach(url.match(/[\\?&]([^=]+)=([^&#]*)/g), function (m) {
-        var a = m.match(/.([^=]+)=(.*)/)
-        params[decodeUrl(a[1])] = decodeUrl(a[2])
-    })
+    var m = url.match(/\?([^#]+)/)
+    if (m) {
+        foreach(m[1].split(/&/), function (m) {
+            if (m.length > 0) {
+                var a = m.split(/=/)
+                params[unescapeUrl(a[0])] = a.length > 1 ? unescapeUrl(a[1]) : true
+            }
+        })
+    }
     return params
 }
 
