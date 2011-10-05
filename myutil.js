@@ -82,6 +82,15 @@ function randomIndex(n) {
     return Math.floor(Math.random() * n)
 }
 
+function pick(a) {
+    if (a instanceof Array) {
+        return a[randomIndex(a.length)]
+    } else {
+        return a[pick(keys(a))]
+    }
+    return a
+}
+
 ////////////////////////////
 // escapeing
 
