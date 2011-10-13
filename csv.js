@@ -1,4 +1,3 @@
-//
 // public domain
 
 function parseCsv(text) {
