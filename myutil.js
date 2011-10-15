@@ -240,6 +240,18 @@ function mapToSelf(a, func) {
     }
 }
 
+function group(a, func) {
+    var b = {}
+    foreach(a, function (e) {
+        var k = func(e)
+        if (k) {
+            if (!b[k]) b[k] = []
+            b[k].push(e)
+        }
+    })
+    return b
+}
+
 //////////////////////////////////////////////
 // json that handles circular references
 
