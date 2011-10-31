@@ -66,6 +66,12 @@ function getFragment(url) {
     return m ? m[1] : ""
 }
 
+function setFragment(frag) {
+    url = window.location.href
+    url = url.replace(/(#[^#]*)?$/, '#' + frag)
+    window.location.href = url
+}
+
 function getUrlParams(url) {
     if (url === undefined) {
         url = window.location.href
