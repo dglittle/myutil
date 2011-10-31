@@ -58,6 +58,14 @@ function time() {
     return new Date().getTime()
 }
 
+function getFragment(url) {
+    if (url === undefined) {
+        url = window.location.href
+    }
+    var m = url.match(/#(.*)/)
+    return m ? m[1] : ""
+}
+
 function getUrlParams(url) {
     if (url === undefined) {
         url = window.location.href
