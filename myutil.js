@@ -92,6 +92,22 @@ function getUrlParams(url) {
 ////////////////////////////
 // random
 
+var digitChars = "0123456789"
+var lowerChars = "abcdefghijklmnopqrstuvwxyz"
+var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+function randomIdentifier(size) {
+    var firstChars = '_' + lowerChars + upperChars
+    var nextChars = firstChars + digitChars
+    
+    var s = []
+    for (var i = 0; i < size; i++) {
+        var chars = i == 0 ? firstChars : nextChars
+        s.push(chars[randomIndex(chars.length)])
+    }
+    return s.join('')
+}
+
 function randomIndex(n) {
     return Math.floor(Math.random() * n)
 }
