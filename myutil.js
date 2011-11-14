@@ -124,6 +124,16 @@ function pick(a) {
     return a
 }
 
+function shuffle(a) {
+    for (var i = 0; i < a.length; i++) {
+        var ri = randomIndex(a.length)
+        var temp = a[i]
+        a[i] = a[ri]
+        a[ri] = temp
+    }
+    return a
+}
+
 ////////////////////////////
 // escapeing
 
