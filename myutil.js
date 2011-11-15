@@ -13,55 +13,86 @@
 ////////////////////////////
 // misc
 
-function setTimeoutRepeat(func, interval) {
+ensure = function () {
+    if (arguments.length <= 3) {
+        if (!(arguments[1] in arguments[0])) {
+            arguments[0][arguments[1]] = arguments[2]
+        }
+        return arguments[0][arguments[1]]
+    }
+    var args = Array.prototype.slice.call(arguments)
+    var prev = ensure.apply(null, args.slice(0, 2).concat([typeof(args[2]) == "string" ? {} : []]))
+    return ensure.apply(null, [prev].concat(args.slice(2)))
+}
+
+makeSet = function (o) {
+    var s = {}
+    foreach(o, function (e) { s[e] = true })
+    return s
+}
+
+setTimeoutRepeat = function (func, interval) {
     setTimeout(function () {
         func()
         setTimeoutRepeat(func, interval)
     }, interval)
 }
 
-function lerp(t0, v0, t1, v1, t) {
+cap = function (t, t0, t1) {
+    if (t < t0)
+        return t0
+    if (t > t1)
+        return t1
+    return t
+}
+
+lerpCap = function (t0, v0, t1, v1, t) {
+    var t = cap(t, t0, t1)
     return (t - t0) * (v1 - v0) / (t1 - t0) + v0
 }
 
-function trim(s) {
+lerp = function (t0, v0, t1, v1, t) {
+    return (t - t0) * (v1 - v0) / (t1 - t0) + v0
+}
+
+trim = function (s) {
     return s.replace(/^\s+|\s+$/g,"");
 }
 
-function values(obj) {
+values = function (obj) {
     var a = []
     foreach(obj, function (e) {a.push(e)})
     return a
 }
 
-function keys(obj) {
+keys = function (obj) {
     var a = []
     foreach(obj, function (v, k) {a.push(k)})
     return a
 }
 
-function compare(a, b) {
+compare = function (a, b) {
     if (a < b) return -1
     if (a > b) return 1
     return 0
 }
 
-function lines(s) {
+lines = function (s) {
     return s.split(/\r?\n/)
 }
 
-function merge(objA, objB) {
+merge = function (objA, objB) {
     foreach(objB, function (v, k) {
         objA[k] = v
     })
     return objA
 }
 
-function time() {
+time = function () {
     return new Date().getTime()
 }
 
-function getFragment(url) {
+getFragment = function (url) {
     if (url === undefined) {
         url = window.location.href
     }
@@ -69,13 +100,13 @@ function getFragment(url) {
     return m ? m[1] : ""
 }
 
-function setFragment(frag) {
+setFragment = function (frag) {
     url = window.location.href
     url = url.replace(/(#[^#]*)?$/, '#' + frag)
     window.location.href = url
 }
 
-function getUrlParams(url) {
+getUrlParams = function (url) {
     if (url === undefined) {
         url = window.location.href
     }
@@ -99,7 +130,7 @@ var digitChars = "0123456789"
 var lowerChars = "abcdefghijklmnopqrstuvwxyz"
 var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-function randomIdentifier(size) {
+randomIdentifier = function (size) {
     var firstChars = '_' + lowerChars + upperChars
     var nextChars = firstChars + digitChars
     
@@ -111,11 +142,11 @@ function randomIdentifier(size) {
     return s.join('')
 }
 
-function randomIndex(n) {
+randomIndex = function (n) {
     return Math.floor(Math.random() * n)
 }
 
-function pick(a) {
+pick = function (a) {
     if (a instanceof Array) {
         return a[randomIndex(a.length)]
     } else {
@@ -124,7 +155,7 @@ function pick(a) {
     return a
 }
 
-function shuffle(a) {
+shuffle = function (a) {
     for (var i = 0; i < a.length; i++) {
         var ri = randomIndex(a.length)
         var temp = a[i]
@@ -137,7 +168,7 @@ function shuffle(a) {
 ////////////////////////////
 // escapeing
 
-function escapeUnicodeChar(c) {
+escapeUnicodeChar = function (c) {
     var code = c.charCodeAt(0)
     var hex = code.toString(16)
     if (code < 16) return '\\u000' + hex
@@ -146,7 +177,7 @@ function escapeUnicodeChar(c) {
     return '\\u' + hex
 }
 
-function escapeString(s) {
+escapeString = function (s) {
     return s.
         replace(/\\/g, '\\\\').
         replace(/\t/g, '\\t').
@@ -157,19 +188,19 @@ function escapeString(s) {
         replace(/[\u0000-\u001F]|[\u0080-\uFFFF]/g, escapeUnicodeChar)
 }
 
-function escapeRegex(s) {
+escapeRegex = function (s) {
     return escapeString(s).replace(/([\{\}\(\)\|\[\]\^\$\.\*\+\?])/g, "\\$1")
 }
 
-function escapeUrl(s) {
+escapeUrl = function (s) {
     return encodeURIComponent(s)
 }
 
-function unescapeUrl(s) {
+unescapeUrl = function (s) {
     return decodeURIComponent(s.replace(/\+/g, "%20"))
 }
 
-function escapeXml(s) {
+escapeXml = function (s) {
     s = s.replace(/&/g, "&amp;")
     s = s.replace(/</g, "&lt;").
         replace(/>/g, "&gt;").
@@ -185,7 +216,7 @@ function escapeXml(s) {
         })
     return s;
 }
-function unescapeXml(s) {
+unescapeXml = function (s) {
     return s.replace(/&[^;]+;/g, function (s) {
         switch(s.substring(1, s.length - 1)) {
             case "amp":  return "&";
@@ -210,7 +241,7 @@ function unescapeXml(s) {
 ////////////////////////////
 // list processing
 
-function foreach(a, func) {
+foreach = function (a, func) {
     if (a instanceof Array) {
         for (var i = 0; i < a.length; i++) {
             if (func(a[i], i) == false) break
@@ -225,7 +256,7 @@ function foreach(a, func) {
     return a
 }
 
-function filter(a, func) {
+filter = function (a, func) {
     if (a instanceof Array) {
         var b = []
         for (var i = 0; i < a.length; i++) {
@@ -249,7 +280,7 @@ function filter(a, func) {
     }
 }
 
-function map(a, func) {
+map = function (a, func) {
     if (a instanceof Array) {
         var b = []
         for (var i = 0; i < a.length; i++) {
@@ -267,7 +298,7 @@ function map(a, func) {
     }
 }
 
-function mapToSelf(a, func) {
+mapToSelf = function (a, func) {
     if (a instanceof Array) {
         for (var i = 0; i < a.length; i++) {
             a[i] = func(a[i], i)
@@ -283,7 +314,7 @@ function mapToSelf(a, func) {
     }
 }
 
-function group(a, func) {
+group = function (a, func) {
     var b = {}
     foreach(a, function (e) {
         var k = func(e)
@@ -295,10 +326,36 @@ function group(a, func) {
     return b
 }
 
+max = function (a, func) {
+    var bestScore = null
+    var best = null
+    foreach(a, function (e, k) {
+        var score = e
+        if (func)
+            score = func(e, k)
+        if (bestScore == null || score > bestScore) {
+            bestScore = score
+            best = e
+        }
+    })
+    return best
+}
+
+find = function (a, func) {
+    var ret = null
+    foreach(a, function (e, k) {
+        if (func(e, k)) {
+            ret = e
+            return false
+        }
+    })
+    return ret
+}
+
 //////////////////////////////////////////////
 // json that handles circular references
 
-function myJson(o) {
+myJson = function (o) {
     var touched = []
     var result = []
     var appendAtEnd = []
@@ -558,7 +615,7 @@ sprintf = sprintfWrapper.init;
  * Copyright (c) 2007 Stefan Goessner (goessner.net)
  * Licensed under the MIT (MIT-LICENSE.txt) licence.
  */
-function jsonPath(obj, expr, arg) {
+jsonPath = function (obj, expr, arg) {
    var P = {
       resultType: arg && arg.resultType || "VALUE",
       result: [],
