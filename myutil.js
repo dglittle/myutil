@@ -336,9 +336,11 @@ max = function (a, func) {
         var score = e
         if (func)
             score = func(e, k)
-        if (bestScore == null || score > bestScore) {
-            bestScore = score
-            best = e
+        if (score > 0 || score <= 0) {
+            if (bestScore == null || score > bestScore) {
+                bestScore = score
+                best = e
+            }
         }
     })
     return best
