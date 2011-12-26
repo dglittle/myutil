@@ -16,6 +16,15 @@
 ////////////////////////////
 // misc
 
+gaussian = function (x, mean, stdDev) {
+    if (mean == null) mean = 0
+    if (stdDev == null) stdDev = 1
+    
+    var d = x - mean
+    var v = stdDev * stdDev
+    return (1/Math.sqrt(2 * Math.PI * v)) * Math.exp(-(d * d) / (2 * v))
+}
+
 ensure = function () {
     if (arguments.length <= 3) {
         if (!(arguments[1] in arguments[0])) {
