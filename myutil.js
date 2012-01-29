@@ -18,6 +18,14 @@
 ////////////////////////////
 // misc
 
+pairs = function (a) {
+    var p = []
+    foreach(a, function (v, k) {
+        p.push([k, v])
+    })
+    return p
+}
+
 // from http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
 unCsv = function ( strData, strDelimiter ){
     strDelimiter = (strDelimiter || ",");
