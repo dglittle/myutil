@@ -10,11 +10,47 @@
 // json2 stuff
 //      - public domain
 //
+// stuff that says it's from some web url has whatever license that url says
+//
 // everything else:
 //      - public domain
 
 ////////////////////////////
 // misc
+
+// from http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
+unCsv = function ( strData, strDelimiter ){
+    strDelimiter = (strDelimiter || ",");
+    var objPattern = new RegExp(
+        (
+            "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+            "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+            "([^\"\\" + strDelimiter + "\\r\\n]*))"
+        ),
+        "gi"
+    );
+
+    var arrData = [[]];
+    var arrMatches = null;
+
+    while (arrMatches = objPattern.exec( strData )){
+        var strMatchedDelimiter = arrMatches[ 1 ];
+        if (strMatchedDelimiter.length &&
+            (strMatchedDelimiter != strDelimiter)) {
+            arrData.push( [] );
+        }
+        if (arrMatches[ 2 ]){
+            var strMatchedValue = arrMatches[ 2 ].replace(
+                new RegExp( "\"\"", "g" ),
+                "\""
+            );
+        } else {
+            var strMatchedValue = arrMatches[ 3 ];
+        }
+        arrData[ arrData.length - 1 ].push( strMatchedValue );
+    }
+    return( arrData );
+}
 
 gaussian = function (x, mean, stdDev) {
     if (mean == null) mean = 0
