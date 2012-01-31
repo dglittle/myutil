@@ -1238,71 +1238,101 @@ if (!JSON) {
 }());
 
 decycle = function(o) {
-    var refKey = "$ref:" + randomIdentifier(4)
+    var rootKey = "root_" + Math.round(Math.random() * 1000)
+    var uniqueObj = {}
     while (true) {
-        var tagObj = {}
-        var cleanup = []
-        function helper(o, path) {
-            if (typeof(o) == "object" && o) {
-                if (typeof(o[refKey]) != "object" || o[refKey].tag != tagObj) {
-                    if (refKey in o)
-                        throw "bad ref key"
-                    o[refKey] = {
-                        tag : tagObj,
-                        path : path
-                    }
-                    cleanup.push(o)
-                } else {
-                    var ref = {}
-                    ref[refKey] = o[refKey].path
-                    return ref
-                }
-                o = map(o, function (e, k) {
-                    if (k == refKey)
-                        return null
-                    return helper(e, path + '[' + JSON.stringify(k) + ']')
-                })
-                delete o[refKey]
-                return o
-            } else {
-                return o
-            }
-        }
-        var done = false
         try {
-            var root = helper(o, "root")
-            done = true
-        } catch (e) {
-            if (e != "bad ref key") throw e
-        }
-        foreach(cleanup, function (o) {
-            delete o[refKey]
-        })
-        if (done) {
-            return {
-                refKey : refKey,
-                root : root 
+            var objs = []
+            function helper(o, path) {
+                if (typeof(o) == "string" && o.slice(0, rootKey.length) == rootKey)
+                    throw "bad root key"
+                if (typeof(o) == "object" && o) {
+                    if (typeof(o[rootKey]) == "object" && o[rootKey].uniqueObj == uniqueObj) {
+                        return o[rootKey].path
+                    } else {
+                        if (rootKey in o)
+                            throw "bad root key"
+                        var oo = (o instanceof Array) ? [] : {}
+                        o[rootKey] = {
+                            uniqueObj : uniqueObj,
+                            path : path,
+                            newObj : oo
+                        }
+                        objs.push(o)
+                        return oo
+                    }
+                }
+                return o
             }
-        } else {
-            refKey += randomIdentifier(4)
+            function helper2(o) {
+                var oo = o[rootKey].newObj
+                var path = o[rootKey].path
+                if (o instanceof Array) {
+                    for (var i = 0; i < o.length; i++) {
+                        oo[i] = helper(o[i], path + '[' + i + ']')
+                    }
+                } else {
+                    for (k in o) {
+                        if (k != rootKey) {
+                            oo[k] = helper(o[k], path + '[' + JSON.stringify(k) + ']')
+                        }
+                    }
+                }
+            }
+            function cleanup() {
+                for (var i = 0; i < objs.length; i++) {
+                    delete objs[i][rootKey]
+                }
+            }
+            
+            var ret = {}
+            ret.cycle_root = rootKey
+            ret[rootKey] = helper(o, rootKey)
+            for (var i = 0; i < objs.length; i++) {
+                helper2(objs[i])
+            }
+            cleanup()
+            return ret
+        } catch (e) {
+            cleanup()
+            if (e == "bad root key") {
+                rootKey += Math.round(Math.random() * 1000)
+            } else {
+                throw e
+            }
         }
     }
 }
 
-retrocycle = function (o) {
-    var refKey = o.refKey
-    var root = o.root
+recycle = function (obj) {
+    // regex adapted from https://github.com/douglascrockford/JSON-js/blob/master/cycle.js
+    var r = /^root(?:_\d+)?(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/
+    
+    if (!obj.cycle_root || !(obj.cycle_root in obj))
+        throw "doesn't look recycle-able"
+    
+    var rootKey = obj.cycle_root
     function helper(o) {
-        if (typeof(o) == "object" && o) {
-            if (o[refKey]) {
-                return eval(o[refKey])
+        if (typeof(o) == "string" && o.slice(0, rootKey.length) == rootKey) {
+            if (!o.match(r)) throw "I'm afraid to eval: " + o
+            with (obj) {
+                return eval(o)
             }
-            return mapToSelf(o, function (e) { return helper(e) })
-        } else {
-            return o
         }
+        if (typeof(o) == "object" && o) {
+            if (o instanceof Array) {
+                for (var i = 0; i < o.length; i++) {
+                    o[i] = helper(o[i])
+                }
+            } else {
+                for (var k in o) {
+                    o[k] = helper(o[k])
+                }
+            }
+        }
+        return o
     }
-    return helper(o.root)
+    return helper(obj[rootKey])
 }
 
 if (typeof(json) == "undefined") {
@@ -1313,9 +1343,10 @@ if (typeof(json) == "undefined") {
 
 unJson = function (s) {
     var o = JSON.parse(s)
-    if (o.refKey && o.root) {
-        o = retrocycle(o)
+    try {
+        return recycle(o)
+    } catch (e) {
+        return o
     }
-    return o
 }
 
