@@ -14,6 +14,21 @@ _.trim = function (s) {
     return s.replace(/^\s+|\s+$/g,"")
 }
 
+_.lines = function (s) {
+    return s.split(/\r?\n/)
+}
+
+_.choose = function (a) {
+    if (a instanceof Array)
+        return a[Math.floor(a.length * Math.random())]
+    else
+        return a[pick(_.keys(a))]
+}
+
+_.json = function (x, pretty) {
+    return JSON.stringify(x, null, pretty ? "    " : null)
+}
+
 _.ensure = function () {
     if (arguments.length <= 3) {
         if (!(arguments[1] in arguments[0])) {
@@ -24,15 +39,6 @@ _.ensure = function () {
     var args = _.toArray(arguments)
     var prev = ensure.apply(null, args.slice(0, 2).concat([typeof(args[2]) == "string" ? {} : []]))
     return ensure.apply(null, [prev].concat(args.slice(2)))
-}
-
-_.getStartOfDay = function (time) {
-    var t = new Date(time)
-    t.setHours(0)
-    t.setMinutes(0)
-    t.setSeconds(0)
-    t.setMilliseconds(0)
-    return t.getTime()
 }
 
 _.dialog = function (content) {
