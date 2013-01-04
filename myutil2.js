@@ -41,6 +41,24 @@ _.ensure = function () {
     return ensure.apply(null, [prev].concat(args.slice(2)))
 }
 
+_.splitHorz = function (percent, a, b) {
+    var t = $('<table class="fill"><tr><td class="a" width="' + percent + '%"></td><td class="b" width="' + (100 - percent) + '%"></td></tr></table>')
+    var _a = t.find('.a')
+    var _b = t.find('.b')
+    _a.append(a)
+    _b.append(b)
+    return t
+}
+
+_.splitVert = function (percent, a, b) {
+    var t = $('<table class="fill"><tr><td class="a" height="' + percent + '%"></td></tr><tr><td class="b" height="' + (100 - percent) + '%"></td></tr></table>')
+    var _a = t.find('.a')
+    var _b = t.find('.b')
+    _a.append(a)
+    _b.append(b)
+    return t
+}
+
 _.dialog = function (content) {
     var win = $(window)
     var w = win.width()
