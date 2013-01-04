@@ -24,6 +24,7 @@ _.choose = function (a) {
     else
         return a[pick(_.keys(a))]
 }
+_.sample = _.choose
 
 _.json = function (x, pretty) {
     return JSON.stringify(x, null, pretty ? "    " : null)
