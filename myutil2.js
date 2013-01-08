@@ -34,8 +34,8 @@ _.ensure = function () {
         return arguments[0][arguments[1]]
     }
     var args = _.toArray(arguments)
-    var prev = ensure.apply(null, args.slice(0, 2).concat([typeof(args[2]) == "string" ? {} : []]))
-    return ensure.apply(null, [prev].concat(args.slice(2)))
+    var prev = _.ensure.apply(null, args.slice(0, 2).concat([typeof(args[2]) == "string" ? {} : []]))
+    return _.ensure.apply(null, [prev].concat(args.slice(2)))
 }
 
 _.splitHorz = function (percent, a, b) {
@@ -178,7 +178,11 @@ _.recycle = function (obj) {
 }
 
 _.json = function (x, pretty) {
-    return JSON.stringify(x, null, pretty === true ? "    " : pretty)
+    try {
+        return JSON.stringify(x, null, pretty === true ? "    " : pretty)
+    } catch (e) {
+        return _.json(_.decycle(x))
+    }
 }
 
 _.unJson = function (s) {

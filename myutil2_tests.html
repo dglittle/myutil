@@ -1,0 +1,50 @@
+<html>
+<head> 
+<title>test</title>
+<style>
+
+</style> 
+</head> 
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+<script src="myutil2.js"></script>
+
+<script>
+
+function verify(x) {
+    if (!x) throw "badness"
+}
+
+$(function () {
+    try {
+        verify(_.lerp(0.5, 0, 1, 1, 0.75) == 0.5)
+        verify(typeof(_.time()) == "number")
+        verify(_.trim(" hello  \n") == "hello")
+        verify(_.lines("hi\nthere").length == 2)
+        verify(_.choose([3, 3, 3]) == 3)
+
+        var x = {}
+        _.ensure(x, "a", "b", 0, "c", 1)
+        verify(x.a.b[0].c == 1)
+
+        var a = {}
+        a.b = a
+        verify(_.json(a).match(/cycle_root/))
+
+        var x = _.unJson(_.json(a))
+        verify(x.b == x)
+
+        _.dialog($('<div>tests passed</div>').append($('<button>ok</button>').click(function () {
+            _.closeDialog()
+        })))
+    } catch (e) {
+        alert("" + e)
+        throw e
+    }
+})
+
+</script>
+
+</body>
+</html>

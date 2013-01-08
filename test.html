@@ -15,6 +15,7 @@
 $(function () {
 	var a = {}
 	a.b = a
+	console.log(JSON.stringify(a))
 	console.log('hii: ' + _.json(_.decycle(_.unJson(_.json(_.decycle(a)))), true))
 })
 
