@@ -1,22 +1,21 @@
 <html>
 <head> 
 <title>test</title>
-<link rel="StyleSheet" href="https://raw.github.com/dglittle/myutil/master/myutil.css" type="text/css">
 <style>
 
 </style> 
 </head> 
 <body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script src="https://raw.github.com/dglittle/myutil/master/myutil.js"></script>
-<script src="https://raw.github.com/dglittle/myutil/master/json2.js"></script>
-
-<script src="tab.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+<script src="myutil2.js"></script>
 
 <script>
 
 $(function () {
-    alert("hi?")
+	var a = {}
+	a.b = a
+	console.log('hi: ' + _.json(_.decycle(_.recycle(_.unJson(_.json(_.decycle(a))))), true))
 })
 
 </script>
