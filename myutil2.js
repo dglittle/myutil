@@ -184,7 +184,7 @@ _.json = function (x, pretty) {
 _.unJson = function (s) {
     var o = JSON.parse(s)
     try {
-        return recycle(o)
+        return _.recycle(o)
     } catch (e) {
         return o
     }
