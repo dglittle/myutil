@@ -38,6 +38,79 @@ _.ensure = function () {
     return _.ensure.apply(null, [prev].concat(args.slice(2)))
 }
 
+_.escapeUnicodeChar = function (c) {
+    var code = c.charCodeAt(0)
+    var hex = code.toString(16)
+    if (code < 16) return '\\u000' + hex
+    if (code < 256) return '\\u00' + hex
+    if (code < 4096) return '\\u0' + hex
+    return '\\u' + hex
+}
+
+// depends on _.escapeUnicodeChar
+_.escapeString = function (s) {
+    return s.
+        replace(/\\/g, '\\\\').
+        replace(/\t/g, '\\t').
+        replace(/\n/g, '\\n').
+        replace(/\r/g, '\\r').
+        replace(/'/g, '\\\'').
+        replace(/"/g, '\\\"').
+        replace(/[\u0000-\u001F]|[\u0080-\uFFFF]/g, _.escapeUnicodeChar)
+}
+
+// depends on _.escapeString
+_.escapeRegExp = function (s) {
+    return _.escapeString(s).replace(/([\{\}\(\)\|\[\]\^\$\.\*\+\?])/g, "\\$1")
+}
+
+_.escapeUrl = function (s) {
+    return encodeURIComponent(s)
+}
+
+_.unescapeUrl = function (s) {
+    return decodeURIComponent(s.replace(/\+/g, "%20"))
+}
+
+_.escapeXml = function (s) {
+    s = s.replace(/&/g, "&amp;")
+    s = s.replace(/</g, "&lt;").
+        replace(/>/g, "&gt;").
+        replace(/'/g, "&apos;").
+        replace(/"/g, "&quot;").
+//            replace(/[\u0000-\u001F]|[\u0080-\uFFFF]/g, function (c) {
+        replace(/[\u0080-\uFFFF]/g, function (c) {
+            var code = c.charCodeAt(0)
+            return '&#' + code + ';'
+            // if we want hex:
+            var hex = code.toString(16)
+            return '&#x' + hex + ';'
+        })
+    return s;
+}
+
+_.unescapeXml = function (s) {
+    return s.replace(/&[^;]+;/g, function (s) {
+        switch(s.substring(1, s.length - 1)) {
+            case "amp":  return "&";
+            case "lt":   return "<";
+            case "gt":   return ">";
+            case "apos": return "'";
+            case "quot": return '"';
+            default:
+                if (s.charAt(1) == "#") {
+                    if (s.charAt(2) == "x") {
+                        return String.fromCharCode(parseInt(s.substring(3, s.length - 1), 16));
+                    } else {
+                        return String.fromCharCode(parseInt(s.substring(2, s.length - 1)));
+                    }
+                } else {
+                    throw "unknown XML escape sequence: " + s
+                }
+        }
+    })
+}
+
 _.splitHorz = function (percent, a, b) {
     var t = $('<table class="fill"><tr><td class="a" width="' + percent + '%"></td><td class="b" width="' + (100 - percent) + '%"></td></tr></table>')
     var _a = t.find('.a')

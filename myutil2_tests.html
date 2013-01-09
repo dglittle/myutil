@@ -13,7 +13,12 @@
 <script>
 
 function verify(x) {
-    if (!x) throw "badness"
+    if (x) {
+        $('body').append($('<div>test passed</div>'))
+    } else {
+        $('body').append($('<div>test FAILED</div>'))
+        throw "badness"
+    }
 }
 
 $(function () {
@@ -23,6 +28,14 @@ $(function () {
         verify(_.trim(" hello  \n") == "hello")
         verify(_.lines("hi\nthere").length == 2)
         verify(_.choose([3, 3, 3]) == 3)
+
+        verify(_.escapeUnicodeChar('\u0345') == '\\u0345')
+        verify(_.escapeString('"hello"') == '\\"hello\\"')
+        verify(_.escapeRegExp('.') == '\\.')
+        verify(_.escapeUrl(' ') == '%20')
+        verify(_.unescapeUrl('%20') == ' ')
+        verify(_.escapeXml('<') == '&lt;')
+        verify(_.unescapeXml('&lt;') == '<')
 
         var x = {}
         _.ensure(x, "a", "b", 0, "c", 1)
