@@ -15,7 +15,7 @@ _.trim = function (s) {
 }
 
 _.lines = function (s) {
-    return s.split(/\r?\n/)
+    return s.split(/\r\n|\r|\n/)
 }
 
 _.choose = function (a) {
