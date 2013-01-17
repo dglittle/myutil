@@ -18,6 +18,10 @@ _.lines = function (s) {
     return s.split(/\r\n|\r|\n/)
 }
 
+_.sum = function (a) {
+    return _.reduce(a, function (a, b) { return a + b }, 0)
+}
+
 _.choose = function (a) {
     if (a instanceof Array)
         return a[Math.floor(a.length * Math.random())]

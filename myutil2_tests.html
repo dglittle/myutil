@@ -27,6 +27,7 @@ $(function () {
         verify(typeof(_.time()) == "number")
         verify(_.trim(" hello  \n") == "hello")
         verify(_.lines("hi\nthere").length == 2)
+        verify(_.sum([3, 4, 7]) == 3 + 4 + 7)
         verify(_.choose([3, 3, 3]) == 3)
 
         verify(_.escapeUnicodeChar('\u0345') == '\\u0345')
