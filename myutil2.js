@@ -30,6 +30,14 @@ _.choose = function (a) {
 }
 _.sample = _.choose
 
+_.unPairs = function (a) {
+    var o = {}
+    _.each(a, function (a) {
+        o[a[0]] = a[1]
+    })
+    return o
+}
+
 _.ensure = function () {
     if (arguments.length <= 3) {
         if (!(arguments[1] in arguments[0])) {

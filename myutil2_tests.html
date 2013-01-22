@@ -12,9 +12,9 @@
 
 <script>
 
-function verify(x) {
+function verify(x, name) {
     if (x) {
-        $('body').append($('<div>test passed</div>'))
+        $('body').append($('<div/>').text('test passed: ' + (name || "no name for test")))
     } else {
         $('body').append($('<div>test FAILED</div>'))
         throw "badness"
@@ -37,6 +37,10 @@ $(function () {
         verify(_.unescapeUrl('%20') == ' ')
         verify(_.escapeXml('<') == '&lt;')
         verify(_.unescapeXml('&lt;') == '<')
+
+        var x = [["a", 5], ["b", 6]]
+        var y = _.unPairs(x)
+        verify(y.a == 5 && y.b == 6, 'unPairs')
 
         var x = {}
         _.ensure(x, "a", "b", 0, "c", 1)
