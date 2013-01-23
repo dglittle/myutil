@@ -266,7 +266,7 @@ _.json = function (x, pretty) {
     try {
         return JSON.stringify(x, null, pretty === true ? "    " : pretty)
     } catch (e) {
-        return _.json(_.decycle(x))
+        return _.json(_.decycle(x), pretty)
     }
 }
 

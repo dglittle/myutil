@@ -49,6 +49,8 @@ $(function () {
         var a = {}
         a.b = a
         verify(_.json(a).match(/cycle_root/))
+        verify(!_.json(a).match(/\n/), 'json not pretty')
+        verify(_.json(a, true).match(/\n/), 'json pretty')
 
         var x = _.unJson(_.json(a))
         verify(x.b == x)
