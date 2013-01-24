@@ -32,6 +32,16 @@ _.sample = _.choose
 
 _.unPairs = _.object
 
+if (!_.oldMap) _.oldMap = _.map
+
+_.map = function (o, iterator, context) {
+    var r = _.isArray(o) ? [] : {}
+    _.each(o, function (v, k, list) {
+        r[k] = iterator.call(context, v, k, list)
+    })
+    return r
+}
+
 _.ensure = function () {
     if (arguments.length <= 3) {
         if (!(arguments[1] in arguments[0])) {

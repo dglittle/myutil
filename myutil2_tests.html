@@ -17,12 +17,22 @@ function verify(x, name) {
         $('body').append($('<div/>').text('test passed: ' + (name || "no name for test")))
     } else {
         $('body').append($('<div>test FAILED</div>'))
-        throw "badness"
+        throw "badness " + (name || " ")
     }
 }
 
 $(function () {
     try {
+        var x = { a : 1, b : 4, c : 9 }
+        var y = _.map(x, Math.sqrt)
+        verify(x.c == 9, 'map obj')
+        verify(y.c == 3, 'map obj')
+
+        var x = [1, 4, 9]
+        var y = _.map(x, Math.sqrt)
+        verify(x[2] == 9, 'map array')
+        verify(y[2] == 3, 'map array')
+
         verify(_.lerp(0.5, 0, 1, 1, 0.75) == 0.5)
         verify(typeof(_.time()) == "number")
         verify(_.trim(" hello  \n") == "hello")
