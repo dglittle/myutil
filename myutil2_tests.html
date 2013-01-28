@@ -23,13 +23,19 @@ function verify(x, name) {
 
 $(function () {
     try {
+        var x = { a : false }
+        verify(_.setAdd(x, "b") === true, 'setAdd')
+        verify(_.setAdd(x, "a") === true, 'setAdd')
+        verify(_.setAdd(x, "a") === false, 'setAdd')
+        verify(_.isEqual(x, { a : true, b : true }), 'setAdd')
+
         var x = { a : 1, b : 4, c : 9 }
         x = _.filter(x, function (e) { return e > 4 })
         verify(_.isEqual(x, { c : 9 }), 'filter')
 
         var x = { a : 1, b : 4, c : 9 }
-        _.bagAdd(x, "a")
-        _.bagAdd(x, "d")
+        verify(_.bagAdd(x, "a") == 2, 'bagAdd')
+        verify(_.bagAdd(x, "d") == 1, 'bagAdd')
         verify(x.a == 2, 'bagAdd')
         verify(x.d == 1, 'bagAdd')
 

@@ -2,10 +2,19 @@
 // dependencies: underscore and jQuery
 // license : public domain
 
+_.setAdd = function (s, key) {
+    if (!_.has(s, key) || !s[key]) {
+        s[key] = true
+        return true
+    }
+    return false
+}
+
 _.bagAdd = function (bag, key) {
     if (!_.has(bag, key))
         bag[key] = 0
     bag[key]++
+    return bag[key]
 }
 
 _.lerp = function (t0, v0, t1, v1, t) {
