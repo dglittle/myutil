@@ -32,6 +32,9 @@ $(function () {
         var x = { a : 1, b : 4, c : 9 }
         x = _.filter(x, function (e) { return e > 4 })
         verify(_.isEqual(x, { c : 9 }), 'filter')
+        
+        var x = _.filter([2, 3, 4], function (e) { return e > 2 })
+        verify(_.isEqual(x, [3, 4]), 'filter')
 
         var x = { a : 1, b : 4, c : 9 }
         verify(_.bagAdd(x, "a") == 2, 'bagAdd')

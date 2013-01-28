@@ -57,13 +57,20 @@ _.map = function (o, iterator, context) {
     return r
 }
 
+if (!_.oldFilter) _.oldFilter = _.filter
+
 _.filter = _.select = function (o, iterator, context) {
-    var r = _.isArray(o) ? [] : {}
-    _.each(o, function (v, k, list) {
-        if (iterator.call(context, v, k, list))
-            r[k] = v
-    })
-    return r
+    if (_.isArray(o)) {
+        return _.oldFilter(o, iterator, context)
+    } else {
+        var r = {}
+        _.each(o, function (v, k, list) {
+            if (iterator.call(context, v, k, list)) {
+                r[k] = v
+            }
+        })
+        return r
+    }
 }
 
 _.ensure = function () {
