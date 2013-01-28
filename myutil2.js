@@ -48,6 +48,15 @@ _.map = function (o, iterator, context) {
     return r
 }
 
+_.filter = _.select = function (o, iterator, context) {
+    var r = _.isArray(o) ? [] : {}
+    _.each(o, function (v, k, list) {
+        if (iterator.call(context, v, k, list))
+            r[k] = v
+    })
+    return r
+}
+
 _.ensure = function () {
     if (arguments.length <= 3) {
         if (!(arguments[1] in arguments[0])) {
