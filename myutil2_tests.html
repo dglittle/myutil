@@ -24,6 +24,12 @@ function verify(x, name) {
 $(function () {
     try {
         var x = { a : 1, b : 4, c : 9 }
+        _.bagAdd(x, "a")
+        _.bagAdd(x, "d")
+        verify(x.a == 2, 'bagAdd')
+        verify(x.d == 1, 'bagAdd')
+
+        var x = { a : 1, b : 4, c : 9 }
         var y = _.map(x, Math.sqrt)
         verify(x.c == 9, 'map obj')
         verify(y.c == 3, 'map obj')

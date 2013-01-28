@@ -2,6 +2,12 @@
 // dependencies: underscore and jQuery
 // license : public domain
 
+_.bagAdd = function (bag, key) {
+    if (!_.has(bag, key))
+        bag[key] = 0
+    bag[key]++
+}
+
 _.lerp = function (t0, v0, t1, v1, t) {
     return (t - t0) * (v1 - v0) / (t1 - t0) + v0
 }
