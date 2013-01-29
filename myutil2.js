@@ -10,6 +10,14 @@ _.setAdd = function (s, key) {
     return false
 }
 
+_.makeSet = function (a) {
+    var s = {}
+    _.each(a, function (e) {
+        s[e] = true
+    })
+    return s
+}
+
 _.bagAdd = function (bag, key) {
     if (!_.has(bag, key))
         bag[key] = 0

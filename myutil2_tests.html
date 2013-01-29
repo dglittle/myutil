@@ -23,6 +23,9 @@ function verify(x, name) {
 
 $(function () {
     try {
+        var x = [1, 2, "a", 2, 1]
+        verify(_.isEqual(_.makeSet(x), { 1 : true, 2 : true, a : true }), 'makeSet')
+
         var x = { a : false }
         verify(_.setAdd(x, "b") === true, 'setAdd')
         verify(_.setAdd(x, "a") === true, 'setAdd')
