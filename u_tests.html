@@ -82,12 +82,14 @@ $(function () {
         verify(_.deepEquals(_.reduce({a:1, b:4, c:9}, function (a, b) { return a + b }, 6), 20))
 
         testing('_.min')
-        verify(_.min([4, 2, 8], function (e) { return -e }) == -8)
+        verify(_.min([4, 2, 8], function (e) { return -e }) == 8)
         verify(_.min([4, 2, 8]) == 2)
+        verify(_.min(['10', '2', '11'], function (e) { return 1 * e }) === '2')
 
         testing('_.max')
-        verify(_.max([4, 2, 16, 8], function (e) { return -e }) == -2)
+        verify(_.max([4, 2, 16, 8], function (e) { return -e }) == 2)
         verify(_.max([4, 2, 16, 8]) == 16)
+        verify(_.max(['1', '2', '11'], function (e) { return 1 * e }) === '11')
 
         testing('_.keys')
         verify(_.deepEquals(_.keys([1, 4, 9]), ['0', '1', '2']))

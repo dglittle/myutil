@@ -83,24 +83,30 @@ _.every = _.all = function (o, func) {
 
 _.min = function (o, func) {
     if (!func) func = _.identity
-    var accum = null
+    var bestScore = null
+    var best = null
     _.each(o, function (v, k) {
-        v = func(v, k)
-        if (accum === null || v < accum)
-            accum = v
+        var score = func(v, k)
+        if (bestScore === null || score < bestScore) {
+            bestScore = score
+            best = v
+        }
     })
-    return accum
+    return best
 }
 
 _.max = function (o, func) {
     if (!func) func = _.identity
-    var accum = null
+    var bestScore = null
+    var best = null
     _.each(o, function (v, k) {
-        v = func(v, k)
-        if (accum === null || v > accum)
-            accum = v
+        var score = func(v, k)
+        if (bestScore === null || score > bestScore) {
+            bestScore = score
+            best = v
+        }
     })
-    return accum
+    return best
 }
 
 _.size = function (o) {
