@@ -1,0 +1,195 @@
+<html>
+<head> 
+<title>test</title>
+<style>
+
+</style> 
+</head> 
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="u.js"></script>
+
+<script>
+
+function testing(name) {
+    $('body').append($('<div/>').text('testing: ' + name))
+}
+
+function verify(x, name) {
+    if (x) {
+        $('body').append($('<div/>').text('test passed'))
+    } else {
+        $('body').append($('<div>test FAILED</div>'))
+        throw "failure"
+    }
+}
+
+$(function () {
+    try {
+        testing('u.has')
+        Object.prototype.hi = "ho"
+        var o = { foo : false }
+        verify(o.hi && !u.has(o, 'hi') && u.has(o, 'foo'))
+        delete Object.prototype.hi
+
+        testing('u.each')
+        var s = ""
+        u.each({ a : 1, b : 4, c : 9 }, function (v, k) {
+            s += v + k
+        })
+        u.each([1, 4, 9], function (v, k) {
+            s += '' + v + k
+        })
+        verify(s == "1a4b9c104192")
+
+        testing('u.size')
+        var a = []
+        a[1] = 'hi'
+        verify(u.size(a) == 2)
+        verify(u.size({a:1, b:2, c:3}) == 3)
+
+        testing('u.deepEquals')
+        var a = [3, 4, { 'hi' : 'ho', 'a' : 'b' }]
+        var b = [3, 4, { 'a' : 'b', 'hi' : 'ho' }]
+        var c = [3, 4, { 'hi' : 'NO', 'a' : 'b' }]
+        verify(u.deepEquals(a, b) && !u.deepEquals(a, c))
+
+        testing('u.any')
+        verify(u.any([1, 2, 3, 4], function (a) { return a == 4 }))
+        verify(!u.any([1, 2, 3, 4], function (a) { return a == 5 }))
+        verify(u.any({a:1, b:2, c:3, d:4}, function (a) { return a == 4 }))
+        verify(!u.any({a:1, b:2, c:3, d:4}, function (a) { return a == 5 }))
+
+        testing('u.all')
+        verify(u.all([1, 2, 3, 4], function (a) { return a < 5 }))
+        verify(!u.all([1, 2, 3, 4], function (a) { return a < 4 }))
+        verify(u.all({a:1, b:2, c:3, d:4}, function (a) { return a < 5 }))
+        verify(!u.all({a:1, b:2, c:3, d:4}, function (a) { return a < 4 }))
+
+        testing('u.map')
+        verify(u.deepEquals(u.map([1, 4, 9], function (e) { return Math.sqrt(e) }), [1, 2, 3]))
+        verify(u.deepEquals(u.map({a:1, b:4, c:9}, function (v, k) { return k + Math.sqrt(v) }), {a:'a1',b:'b2',c:'c3'}))
+
+        testing('u.filter')
+        verify(u.deepEquals(u.filter([1, 4, 9], function (e) { return e % 2 != 0 }), [1, 9]))
+        verify(u.deepEquals(u.filter({a:1, b:4, c:9}, function (v, k) { return v % 2 != 0 }), {a:1, c:9}))
+
+        testing('u.fold')
+        verify(u.deepEquals(u.fold([1, 4, 9], function (a, b) { return a * b }, 2), 2 * 1 * 4 * 9))
+        verify(u.deepEquals(u.fold({a:1, b:4, c:9}, function (a, b) { return a + b }, 6), 20))
+
+        testing('u.keys')
+        verify(u.deepEquals(u.keys([1, 4, 9]), ['0', '1', '2']))
+        verify(u.deepEquals(u.keys({a:1, b:4, c:9}), ['a', 'b', 'c']))
+
+        testing('u.values')
+        verify(u.deepEquals(u.values([1, 4, 9]), [1, 4, 9]))
+        verify(u.deepEquals(u.values({a:1, b:4, c:9}), [1, 4, 9]))
+
+        testing('u.pairs')
+        verify(u.deepEquals(u.pairs([1, 4, 9]), [[0, 1], [1, 4], [2, 9]]))
+        verify(u.deepEquals(u.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['c', 9]]))
+        verify(!u.deepEquals(u.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['NO', 9]]))
+
+        testing('u.unPairs')
+        verify(u.deepEquals(u.unPairs([['0', 1], ['1', 4], ['2', 9]]), {'0':1, '1':4, '2':9}))
+        verify(u.deepEquals(u.unPairs([['a', 1], ['b', 4], ['c', 9]]), {a:1, b:4, c:9}))
+
+        testing('u.setAdd')
+        var s = {a:false}
+        verify(u.setAdd(s, 'a') === true)
+        verify(u.deepEquals(s, {a:true}))
+        verify(u.setAdd(s, 'a') === false)
+        var s = {}
+        verify(u.setAdd(s, 'a') === true)
+        verify(u.deepEquals(s, {a:true}))
+
+        testing('u.makeSet')
+        verify(u.deepEquals(u.makeSet(['a', 'b']), {a:true, b:true}))
+        verify(u.deepEquals(u.makeSet({'a':'b','c':'d'}), {b:true,d:true}))
+
+        testing('u.bagAdd')
+        var b = {}
+        u.bagAdd(b, 'a')
+        u.bagAdd(b, 'b')
+        u.bagAdd(b, 'a')
+        verify(u.deepEquals(b, {b:1,a:2}))
+
+        testing('u.lerp')
+        verify(u.lerp(0, 0, 1, 1, .5) == .5)
+
+        testing('u.time')
+        verify(Math.abs(u.time() - (new Date().getTime())) < 10)
+
+        testing('u.trim')
+        verify(u.trim(' hi  \n') == 'hi')
+
+        testing('u.lines')
+        verify(u.deepEquals(u.lines('a\nb'), ['a', 'b']))
+
+        testing('u.sum')
+        verify(u.sum([1, 4, 9]) == 14)
+        verify(u.sum({a:1, b:4, c:9}) == 14)
+
+        testing('u.sample')
+        verify(u.sample([2, 4, 8]) % 2 == 0)
+        verify(u.sample({a:1, b:3, c:7}) % 2 == 1)
+
+        testing('u.toArray')
+        function func() {
+            verify(u.deepEquals(u.toArray(arguments), [1, 2, 3]))
+        }
+        func(1, 2, 3)
+
+        testing('u.ensure')
+        var a = {}
+        verify(u.ensure(a, 'b', 1, 'c', 5), 5)
+        verify(u.ensure(a, 'b', 0, 'd', 2), 2)
+        verify(u.deepEquals(a, {b:[{d:2},{c:5}]}))
+
+        testing('escape and unescape functions')
+        verify(u.escapeUnicodeChar('\u0345') == '\\u0345')
+        verify(u.escapeString('"hello"') == '\\"hello\\"')
+        verify(u.escapeRegExp('.') == '\\.')
+        verify(u.escapeUrl(' ') == '%20')
+        verify(u.unescapeUrl('%20') == ' ')
+        verify(u.escapeXml('<') == '&lt;')
+        verify(u.unescapeXml('&lt;') == '<')
+
+        testing('old tests')
+        var x = [["a", 5], ["b", 6]]
+        var y = u.unPairs(x)
+        verify(y.a == 5 && y.b == 6)
+
+        var x = {}
+        u.ensure(x, "a", "b", 0, "c", 1)
+        verify(x.a.b[0].c == 1)
+
+        var a = {}
+        a.b = a
+        verify(u.json(a).match(/cycle_root/))
+        verify(!u.json(a).match(/\n/))
+        verify(u.json(a, true).match(/\n/))
+
+        var x = u.unJson(u.json(a))
+        verify(x.b == x)
+
+        u.dialog($('<div style="width:400px;height:400px"/>').append(u.splitHorz(30,
+            $('<button>ok</button>').click(function () {
+                u.closeDialog()
+            }),
+            u.splitVert(50,
+                $('<div/>').text('tests passed!'),
+                $('<div/>').text('yup..')
+            )
+        )))
+    } catch (e) {
+        alert("" + e)
+        throw e
+    }
+})
+
+</script>
+
+</body>
+</html>
