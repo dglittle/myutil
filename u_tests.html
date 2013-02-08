@@ -26,6 +26,9 @@ function verify(x, name) {
 
 $(function () {
     try {
+        testing('_.identity')
+        verify(_.identity(5) == 5)
+
         testing('_.has')
         Object.prototype.hi = "ho"
         var o = { foo : false }
@@ -58,13 +61,13 @@ $(function () {
         verify(_.any([1, 2, 3, 4], function (a) { return a == 4 }))
         verify(!_.any([1, 2, 3, 4], function (a) { return a == 5 }))
         verify(_.any({a:1, b:2, c:3, d:4}, function (a) { return a == 4 }))
-        verify(!_.any({a:1, b:2, c:3, d:4}, function (a) { return a == 5 }))
+        verify(!_.some({a:1, b:2, c:3, d:4}, function (a) { return a == 5 }))
 
         testing('_.all')
         verify(_.all([1, 2, 3, 4], function (a) { return a < 5 }))
         verify(!_.all([1, 2, 3, 4], function (a) { return a < 4 }))
         verify(_.all({a:1, b:2, c:3, d:4}, function (a) { return a < 5 }))
-        verify(!_.all({a:1, b:2, c:3, d:4}, function (a) { return a < 4 }))
+        verify(!_.every({a:1, b:2, c:3, d:4}, function (a) { return a < 4 }))
 
         testing('_.map')
         verify(_.deepEquals(_.map([1, 4, 9], function (e) { return Math.sqrt(e) }), [1, 2, 3]))
@@ -76,7 +79,15 @@ $(function () {
 
         testing('_.fold')
         verify(_.deepEquals(_.fold([1, 4, 9], function (a, b) { return a * b }, 2), 2 * 1 * 4 * 9))
-        verify(_.deepEquals(_.fold({a:1, b:4, c:9}, function (a, b) { return a + b }, 6), 20))
+        verify(_.deepEquals(_.reduce({a:1, b:4, c:9}, function (a, b) { return a + b }, 6), 20))
+
+        testing('_.min')
+        verify(_.min([4, 2, 8], function (e) { return -e }) == -8)
+        verify(_.min([4, 2, 8]) == 2)
+
+        testing('_.max')
+        verify(_.max([4, 2, 16, 8], function (e) { return -e }) == -2)
+        verify(_.max([4, 2, 16, 8]) == 16)
 
         testing('_.keys')
         verify(_.deepEquals(_.keys([1, 4, 9]), ['0', '1', '2']))
@@ -94,12 +105,6 @@ $(function () {
         testing('_.unPairs')
         verify(_.deepEquals(_.unPairs([['0', 1], ['1', 4], ['2', 9]]), {'0':1, '1':4, '2':9}))
         verify(_.deepEquals(_.unPairs([['a', 1], ['b', 4], ['c', 9]]), {a:1, b:4, c:9}))
-
-        testing('_.min')
-        verify(_.min([4, 2, 8]) == 2)
-
-        testing('_.max')
-        verify(_.max([4, 2, 16, 8]) == 16)
 
         testing('_.setAdd')
         var s = {a:false}

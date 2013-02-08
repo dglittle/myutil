@@ -17,6 +17,8 @@ _.has = function (o, k) {
     return o.hasOwnProperty(k)
 }
 
+_.identity = function (e) { return e }
+
 _.each = function (o, func) {
     if (o instanceof Array)
         return o.forEach(func)
@@ -26,6 +28,7 @@ _.each = function (o, func) {
 }
 
 _.map = function (o, func) {
+    if (!func) func = _.identity
     if (o instanceof Array)
         return o.map(func)
     var accum = {}
@@ -36,6 +39,7 @@ _.map = function (o, func) {
 }
 
 _.filter = function (o, func) {
+    if (!func) func = _.identity
     if (o instanceof Array)
         return o.filter(func)
     var accum = {}
@@ -47,6 +51,7 @@ _.filter = function (o, func) {
 }
 
 _.reduce = _.fold = function (o, func, init) {
+    if (!func) func = _.identity
     if (o instanceof Array)
         return o.reduce(func, init)
     var accum = init
@@ -57,6 +62,7 @@ _.reduce = _.fold = function (o, func, init) {
 }
 
 _.some = _.any = function (o, func) {
+    if (!func) func = _.identity
     if (o instanceof Array)
         return o.some(func)
     for (var k in o)
@@ -66,6 +72,7 @@ _.some = _.any = function (o, func) {
 }
 
 _.every = _.all = function (o, func) {
+    if (!func) func = _.identity
     if (o instanceof Array)
         return o.every(func)
     for (var k in o)
@@ -74,7 +81,29 @@ _.every = _.all = function (o, func) {
     return true
 }
 
-_.size = function (o, func) {
+_.min = function (o, func) {
+    if (!func) func = _.identity
+    var accum = null
+    _.each(o, function (v, k) {
+        v = func(v, k)
+        if (accum === null || v < accum)
+            accum = v
+    })
+    return accum
+}
+
+_.max = function (o, func) {
+    if (!func) func = _.identity
+    var accum = null
+    _.each(o, function (v, k) {
+        v = func(v, k)
+        if (accum === null || v > accum)
+            accum = v
+    })
+    return accum
+}
+
+_.size = function (o) {
     if (o instanceof Array)
         return o.length
     return _.keys(o).length
@@ -115,24 +144,6 @@ _.unPairs = function (a) {
     var accum = {}
     _.each(a, function (e) {
         accum[e[0]] = e[1]
-    })
-    return accum
-}
-
-_.min = function (o, func) {
-    var accum = null
-    _.each(o, function (v) {
-        if (accum === null || v < accum)
-            accum = v
-    })
-    return accum
-}
-
-_.max = function (o, func) {
-    var accum = null
-    _.each(o, function (v) {
-        if (accum === null || v > accum)
-            accum = v
     })
     return accum
 }
