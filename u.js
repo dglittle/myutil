@@ -10,14 +10,14 @@
 // every
 // some
 
-u = (function () {
-var u = {}
+_ = (function () {
+var _ = {}
 
-u.has = function (o, k) {
+_.has = function (o, k) {
     return o.hasOwnProperty(k)
 }
 
-u.each = function (o, func) {
+_.each = function (o, func) {
     if (o instanceof Array)
         return o.forEach(func)
     for (var k in o)
@@ -25,7 +25,7 @@ u.each = function (o, func) {
             func(o[k], k)
 }
 
-u.map = function (o, func) {
+_.map = function (o, func) {
     if (o instanceof Array)
         return o.map(func)
     var accum = {}
@@ -35,7 +35,7 @@ u.map = function (o, func) {
     return accum
 }
 
-u.filter = function (o, func) {
+_.filter = function (o, func) {
     if (o instanceof Array)
         return o.filter(func)
     var accum = {}
@@ -46,7 +46,7 @@ u.filter = function (o, func) {
     return accum
 }
 
-u.reduce = u.fold = function (o, func, init) {
+_.reduce = _.fold = function (o, func, init) {
     if (o instanceof Array)
         return o.reduce(func, init)
     var accum = init
@@ -56,7 +56,7 @@ u.reduce = u.fold = function (o, func, init) {
     return accum
 }
 
-u.some = u.any = function (o, func) {
+_.some = _.any = function (o, func) {
     if (o instanceof Array)
         return o.some(func)
     for (var k in o)
@@ -65,7 +65,7 @@ u.some = u.any = function (o, func) {
     return false
 }
 
-u.every = u.all = function (o, func) {
+_.every = _.all = function (o, func) {
     if (o instanceof Array)
         return o.every(func)
     for (var k in o)
@@ -74,136 +74,136 @@ u.every = u.all = function (o, func) {
     return true
 }
 
-u.size = function (o, func) {
+_.size = function (o, func) {
     if (o instanceof Array)
         return o.length
-    return u.keys(o).length
+    return _.keys(o).length
 }
 
-u.deepEquals = function (a, b) {
+_.deepEquals = function (a, b) {
     if (typeof(a) != typeof(b)) return false
     if (typeof(a) == 'object') {
-        return u.size(a) == u.size(b) && u.all(a, function (v, k) {
-            return u.has(b, k) && u.deepEquals(b[k], v)
+        return _.size(a) == _.size(b) && _.all(a, function (v, k) {
+            return _.has(b, k) && _.deepEquals(b[k], v)
         })
     } else {
         return a == b
     }
 }
 
-u.keys = function (o) {
+_.keys = function (o) {
     return Object.keys(o)
 }
 
-u.values = function (o) {
+_.values = function (o) {
     var accum = []
-    u.each(o, function (e) {
+    _.each(o, function (e) {
         accum.push(e)
     })
     return accum
 }
 
-u.pairs = function (o) {
+_.pairs = function (o) {
     var accum = []
-    u.each(o, function (v, k) {
+    _.each(o, function (v, k) {
         accum.push([k, v])
     })
     return accum
 }
 
-u.unPairs = function (a) {
+_.unPairs = function (a) {
     var accum = {}
-    u.each(a, function (e) {
+    _.each(a, function (e) {
         accum[e[0]] = e[1]
     })
     return accum
 }
 
-u.min = function (o, func) {
+_.min = function (o, func) {
     var accum = null
-    u.each(o, function (v) {
+    _.each(o, function (v) {
         if (accum === null || v < accum)
             accum = v
     })
     return accum
 }
 
-u.max = function (o, func) {
+_.max = function (o, func) {
     var accum = null
-    u.each(o, function (v) {
+    _.each(o, function (v) {
         if (accum === null || v > accum)
             accum = v
     })
     return accum
 }
 
-u.setAdd = function (s, key) {
-    if (!u.has(s, key) || !s[key])
+_.setAdd = function (s, key) {
+    if (!_.has(s, key) || !s[key])
         return s[key] = true
     return false
 }
 
-u.makeSet = function (a) {
+_.makeSet = function (a) {
     var s = {}
-    u.each(a, function (e) {
+    _.each(a, function (e) {
         s[e] = true
     })
     return s
 }
 
-u.bagAdd = function (bag, key) {
-    if (!u.has(bag, key))
+_.bagAdd = function (bag, key) {
+    if (!_.has(bag, key))
         bag[key] = 0
     return ++bag[key]
 }
 
-u.lerp = function (t0, v0, t1, v1, t) {
+_.lerp = function (t0, v0, t1, v1, t) {
     return (t - t0) * (v1 - v0) / (t1 - t0) + v0
 }
 
-u.time = function () {
+_.time = function () {
     return new Date().getTime()
 }
 
-u.trim = function (s) {
+_.trim = function (s) {
     return s.replace(/^\s+|\s+$/g,"")
 }
 
-u.lines = function (s) {
+_.lines = function (s) {
     return s.split(/\r\n|\r|\n/)
 }
 
-u.sum = function (a) {
-    return u.fold(a, function (a, b) { return a + b }, 0)
+_.sum = function (a) {
+    return _.fold(a, function (a, b) { return a + b }, 0)
 }
 
-u.sample = function (o) {
+_.sample = function (o) {
     if (o instanceof Array)
         return o[Math.floor(o.length * Math.random())]
     else
-        return u.sample(u.values(o))
+        return _.sample(_.values(o))
 }
 
-u.toArray = function (a) {
+_.toArray = function (a) {
     var accum = []
     for (var i = 0; i < a.length; i++)
         accum[i] = a[i]
     return accum
 }
 
-u.ensure = function () {
+_.ensure = function () {
     if (arguments.length <= 3) {
         if (!(arguments[1] in arguments[0])) {
             arguments[0][arguments[1]] = arguments[2]
         }
         return arguments[0][arguments[1]]
     }
-    var args = u.toArray(arguments)
-    var prev = u.ensure.apply(null, args.slice(0, 2).concat([typeof(args[2]) == "string" ? {} : []]))
-    return u.ensure.apply(null, [prev].concat(args.slice(2)))
+    var args = _.toArray(arguments)
+    var prev = _.ensure.apply(null, args.slice(0, 2).concat([typeof(args[2]) == "string" ? {} : []]))
+    return _.ensure.apply(null, [prev].concat(args.slice(2)))
 }
 
-u.escapeUnicodeChar = function (c) {
+_.escapeUnicodeChar = function (c) {
     var code = c.charCodeAt(0)
     var hex = code.toString(16)
     if (code < 16) return '\\u000' + hex
@@ -212,7 +212,7 @@ u.escapeUnicodeChar = function (c) {
     return '\\u' + hex
 }
 
-u.escapeString = function (s) {
+_.escapeString = function (s) {
     return s.
         replace(/\\/g, '\\\\').
         replace(/\t/g, '\\t').
@@ -220,22 +220,22 @@ u.escapeString = function (s) {
         replace(/\r/g, '\\r').
         replace(/'/g, '\\\'').
         replace(/"/g, '\\\"').
-        replace(/[\u0000-\u001F]|[\u0080-\uFFFF]/g, u.escapeUnicodeChar)
+        replace(/[\u0000-\u001F]|[\u0080-\uFFFF]/g, _.escapeUnicodeChar)
 }
 
-u.escapeRegExp = function (s) {
-    return u.escapeString(s).replace(/([\{\}\(\)\|\[\]\^\$\.\*\+\?])/g, "\\$1")
+_.escapeRegExp = function (s) {
+    return _.escapeString(s).replace(/([\{\}\(\)\|\[\]\^\$\.\*\+\?])/g, "\\$1")
 }
 
-u.escapeUrl = function (s) {
+_.escapeUrl = function (s) {
     return encodeURIComponent(s)
 }
 
-u.unescapeUrl = function (s) {
+_.unescapeUrl = function (s) {
     return decodeURIComponent(s.replace(/\+/g, "%20"))
 }
 
-u.escapeXml = function (s) {
+_.escapeXml = function (s) {
     s = s.replace(/&/g, "&amp;")
     s = s.replace(/</g, "&lt;").
         replace(/>/g, "&gt;").
@@ -252,7 +252,7 @@ u.escapeXml = function (s) {
     return s;
 }
 
-u.unescapeXml = function (s) {
+_.unescapeXml = function (s) {
     return s.replace(/&[^;]+;/g, function (s) {
         switch(s.substring(1, s.length - 1)) {
             case "amp":  return "&";
@@ -274,7 +274,7 @@ u.unescapeXml = function (s) {
     })
 }
 
-u.splitHorz = function (percent, a, b) {
+_.splitHorz = function (percent, a, b) {
     var t = $('<table style="width:100%;height:100%"><tr><td class="a" width="' + percent + '%"></td><td class="b" width="' + (100 - percent) + '%"></td></tr></table>')
     // don't do this:
     // t.find('.a').append(a)
@@ -286,7 +286,7 @@ u.splitHorz = function (percent, a, b) {
     return t
 }
 
-u.splitVert = function (percent, a, b) {
+_.splitVert = function (percent, a, b) {
     var t = $('<table style="width:100%;height:100%"><tr><td class="a" height="' + percent + '%"></td></tr><tr><td class="b" height="' + (100 - percent) + '%"></td></tr></table>')
     // don't do this:
     // t.find('.a').append(a)
@@ -298,7 +298,7 @@ u.splitVert = function (percent, a, b) {
     return t
 }
 
-u.dialog = function (content) {
+_.dialog = function (content) {
     var win = $(window)
     var w = win.width()
     var h = win.height()
@@ -317,13 +317,13 @@ u.dialog = function (content) {
         })
     }, 0)
     
-    u.closeDialog = function () {
+    _.closeDialog = function () {
         b.remove()
         d.remove()
     }
 }
 
-u.decycle = function(o) {
+_.decycle = function(o) {
     var rootKey = "root_" + Math.round(Math.random() * 1000)
     var uniqueObj = {}
     while (true) {
@@ -390,7 +390,7 @@ u.decycle = function(o) {
     }
 }
 
-u.recycle = function (obj) {
+_.recycle = function (obj) {
     // regex adapted from https://github.com/douglascrockford/JSON-js/blob/master/cycle.js
     var r = /^root(?:_\d+)?(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/
     
@@ -421,22 +421,22 @@ u.recycle = function (obj) {
     return helper(obj[rootKey])
 }
 
-u.json = function (x, pretty) {
+_.json = function (x, pretty) {
     try {
         return JSON.stringify(x, null, pretty === true ? "    " : pretty)
     } catch (e) {
-        return u.json(u.decycle(x), pretty)
+        return _.json(_.decycle(x), pretty)
     }
 }
 
-u.unJson = function (s) {
+_.unJson = function (s) {
     var o = JSON.parse(s)
     try {
-        return u.recycle(o)
+        return _.recycle(o)
     } catch (e) {
         return o
     }
 }
 
-return u
+return _
 })();

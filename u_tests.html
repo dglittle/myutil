@@ -26,165 +26,165 @@ function verify(x, name) {
 
 $(function () {
     try {
-        testing('u.has')
+        testing('_.has')
         Object.prototype.hi = "ho"
         var o = { foo : false }
-        verify(o.hi && !u.has(o, 'hi') && u.has(o, 'foo'))
+        verify(o.hi && !_.has(o, 'hi') && _.has(o, 'foo'))
         delete Object.prototype.hi
 
-        testing('u.each')
+        testing('_.each')
         var s = ""
-        u.each({ a : 1, b : 4, c : 9 }, function (v, k) {
+        _.each({ a : 1, b : 4, c : 9 }, function (v, k) {
             s += v + k
         })
-        u.each([1, 4, 9], function (v, k) {
+        _.each([1, 4, 9], function (v, k) {
             s += '' + v + k
         })
         verify(s == "1a4b9c104192")
 
-        testing('u.size')
+        testing('_.size')
         var a = []
         a[1] = 'hi'
-        verify(u.size(a) == 2)
-        verify(u.size({a:1, b:2, c:3}) == 3)
+        verify(_.size(a) == 2)
+        verify(_.size({a:1, b:2, c:3}) == 3)
 
-        testing('u.deepEquals')
+        testing('_.deepEquals')
         var a = [3, 4, { 'hi' : 'ho', 'a' : 'b' }]
         var b = [3, 4, { 'a' : 'b', 'hi' : 'ho' }]
         var c = [3, 4, { 'hi' : 'NO', 'a' : 'b' }]
-        verify(u.deepEquals(a, b) && !u.deepEquals(a, c))
+        verify(_.deepEquals(a, b) && !_.deepEquals(a, c))
 
-        testing('u.any')
-        verify(u.any([1, 2, 3, 4], function (a) { return a == 4 }))
-        verify(!u.any([1, 2, 3, 4], function (a) { return a == 5 }))
-        verify(u.any({a:1, b:2, c:3, d:4}, function (a) { return a == 4 }))
-        verify(!u.any({a:1, b:2, c:3, d:4}, function (a) { return a == 5 }))
+        testing('_.any')
+        verify(_.any([1, 2, 3, 4], function (a) { return a == 4 }))
+        verify(!_.any([1, 2, 3, 4], function (a) { return a == 5 }))
+        verify(_.any({a:1, b:2, c:3, d:4}, function (a) { return a == 4 }))
+        verify(!_.any({a:1, b:2, c:3, d:4}, function (a) { return a == 5 }))
 
-        testing('u.all')
-        verify(u.all([1, 2, 3, 4], function (a) { return a < 5 }))
-        verify(!u.all([1, 2, 3, 4], function (a) { return a < 4 }))
-        verify(u.all({a:1, b:2, c:3, d:4}, function (a) { return a < 5 }))
-        verify(!u.all({a:1, b:2, c:3, d:4}, function (a) { return a < 4 }))
+        testing('_.all')
+        verify(_.all([1, 2, 3, 4], function (a) { return a < 5 }))
+        verify(!_.all([1, 2, 3, 4], function (a) { return a < 4 }))
+        verify(_.all({a:1, b:2, c:3, d:4}, function (a) { return a < 5 }))
+        verify(!_.all({a:1, b:2, c:3, d:4}, function (a) { return a < 4 }))
 
-        testing('u.map')
-        verify(u.deepEquals(u.map([1, 4, 9], function (e) { return Math.sqrt(e) }), [1, 2, 3]))
-        verify(u.deepEquals(u.map({a:1, b:4, c:9}, function (v, k) { return k + Math.sqrt(v) }), {a:'a1',b:'b2',c:'c3'}))
+        testing('_.map')
+        verify(_.deepEquals(_.map([1, 4, 9], function (e) { return Math.sqrt(e) }), [1, 2, 3]))
+        verify(_.deepEquals(_.map({a:1, b:4, c:9}, function (v, k) { return k + Math.sqrt(v) }), {a:'a1',b:'b2',c:'c3'}))
 
-        testing('u.filter')
-        verify(u.deepEquals(u.filter([1, 4, 9], function (e) { return e % 2 != 0 }), [1, 9]))
-        verify(u.deepEquals(u.filter({a:1, b:4, c:9}, function (v, k) { return v % 2 != 0 }), {a:1, c:9}))
+        testing('_.filter')
+        verify(_.deepEquals(_.filter([1, 4, 9], function (e) { return e % 2 != 0 }), [1, 9]))
+        verify(_.deepEquals(_.filter({a:1, b:4, c:9}, function (v, k) { return v % 2 != 0 }), {a:1, c:9}))
 
-        testing('u.fold')
-        verify(u.deepEquals(u.fold([1, 4, 9], function (a, b) { return a * b }, 2), 2 * 1 * 4 * 9))
-        verify(u.deepEquals(u.fold({a:1, b:4, c:9}, function (a, b) { return a + b }, 6), 20))
+        testing('_.fold')
+        verify(_.deepEquals(_.fold([1, 4, 9], function (a, b) { return a * b }, 2), 2 * 1 * 4 * 9))
+        verify(_.deepEquals(_.fold({a:1, b:4, c:9}, function (a, b) { return a + b }, 6), 20))
 
-        testing('u.keys')
-        verify(u.deepEquals(u.keys([1, 4, 9]), ['0', '1', '2']))
-        verify(u.deepEquals(u.keys({a:1, b:4, c:9}), ['a', 'b', 'c']))
+        testing('_.keys')
+        verify(_.deepEquals(_.keys([1, 4, 9]), ['0', '1', '2']))
+        verify(_.deepEquals(_.keys({a:1, b:4, c:9}), ['a', 'b', 'c']))
 
-        testing('u.values')
-        verify(u.deepEquals(u.values([1, 4, 9]), [1, 4, 9]))
-        verify(u.deepEquals(u.values({a:1, b:4, c:9}), [1, 4, 9]))
+        testing('_.values')
+        verify(_.deepEquals(_.values([1, 4, 9]), [1, 4, 9]))
+        verify(_.deepEquals(_.values({a:1, b:4, c:9}), [1, 4, 9]))
 
-        testing('u.pairs')
-        verify(u.deepEquals(u.pairs([1, 4, 9]), [[0, 1], [1, 4], [2, 9]]))
-        verify(u.deepEquals(u.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['c', 9]]))
-        verify(!u.deepEquals(u.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['NO', 9]]))
+        testing('_.pairs')
+        verify(_.deepEquals(_.pairs([1, 4, 9]), [[0, 1], [1, 4], [2, 9]]))
+        verify(_.deepEquals(_.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['c', 9]]))
+        verify(!_.deepEquals(_.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['NO', 9]]))
 
-        testing('u.unPairs')
-        verify(u.deepEquals(u.unPairs([['0', 1], ['1', 4], ['2', 9]]), {'0':1, '1':4, '2':9}))
-        verify(u.deepEquals(u.unPairs([['a', 1], ['b', 4], ['c', 9]]), {a:1, b:4, c:9}))
+        testing('_.unPairs')
+        verify(_.deepEquals(_.unPairs([['0', 1], ['1', 4], ['2', 9]]), {'0':1, '1':4, '2':9}))
+        verify(_.deepEquals(_.unPairs([['a', 1], ['b', 4], ['c', 9]]), {a:1, b:4, c:9}))
 
-        testing('u.min')
-        verify(u.min([4, 2, 8]) == 2)
+        testing('_.min')
+        verify(_.min([4, 2, 8]) == 2)
 
-        testing('u.max')
-        verify(u.max([4, 2, 16, 8]) == 16)
+        testing('_.max')
+        verify(_.max([4, 2, 16, 8]) == 16)
 
-        testing('u.setAdd')
+        testing('_.setAdd')
         var s = {a:false}
-        verify(u.setAdd(s, 'a') === true)
-        verify(u.deepEquals(s, {a:true}))
-        verify(u.setAdd(s, 'a') === false)
+        verify(_.setAdd(s, 'a') === true)
+        verify(_.deepEquals(s, {a:true}))
+        verify(_.setAdd(s, 'a') === false)
         var s = {}
-        verify(u.setAdd(s, 'a') === true)
-        verify(u.deepEquals(s, {a:true}))
+        verify(_.setAdd(s, 'a') === true)
+        verify(_.deepEquals(s, {a:true}))
 
-        testing('u.makeSet')
-        verify(u.deepEquals(u.makeSet(['a', 'b']), {a:true, b:true}))
-        verify(u.deepEquals(u.makeSet({'a':'b','c':'d'}), {b:true,d:true}))
+        testing('_.makeSet')
+        verify(_.deepEquals(_.makeSet(['a', 'b']), {a:true, b:true}))
+        verify(_.deepEquals(_.makeSet({'a':'b','c':'d'}), {b:true,d:true}))
 
-        testing('u.bagAdd')
+        testing('_.bagAdd')
         var b = {}
-        u.bagAdd(b, 'a')
-        u.bagAdd(b, 'b')
-        u.bagAdd(b, 'a')
-        verify(u.deepEquals(b, {b:1,a:2}))
+        _.bagAdd(b, 'a')
+        _.bagAdd(b, 'b')
+        _.bagAdd(b, 'a')
+        verify(_.deepEquals(b, {b:1,a:2}))
 
-        testing('u.lerp')
-        verify(u.lerp(0, 0, 1, 1, .5) == .5)
+        testing('_.lerp')
+        verify(_.lerp(0, 0, 1, 1, .5) == .5)
 
-        testing('u.time')
-        verify(Math.abs(u.time() - (new Date().getTime())) < 10)
+        testing('_.time')
+        verify(Math.abs(_.time() - (new Date().getTime())) < 10)
 
-        testing('u.trim')
-        verify(u.trim(' hi  \n') == 'hi')
+        testing('_.trim')
+        verify(_.trim(' hi  \n') == 'hi')
 
-        testing('u.lines')
-        verify(u.deepEquals(u.lines('a\nb'), ['a', 'b']))
+        testing('_.lines')
+        verify(_.deepEquals(_.lines('a\nb'), ['a', 'b']))
 
-        testing('u.sum')
-        verify(u.sum([1, 4, 9]) == 14)
-        verify(u.sum({a:1, b:4, c:9}) == 14)
+        testing('_.sum')
+        verify(_.sum([1, 4, 9]) == 14)
+        verify(_.sum({a:1, b:4, c:9}) == 14)
 
-        testing('u.sample')
-        verify(u.sample([2, 4, 8]) % 2 == 0)
-        verify(u.sample({a:1, b:3, c:7}) % 2 == 1)
+        testing('_.sample')
+        verify(_.sample([2, 4, 8]) % 2 == 0)
+        verify(_.sample({a:1, b:3, c:7}) % 2 == 1)
 
-        testing('u.toArray')
+        testing('_.toArray')
         function func() {
-            verify(u.deepEquals(u.toArray(arguments), [1, 2, 3]))
+            verify(_.deepEquals(_.toArray(arguments), [1, 2, 3]))
         }
         func(1, 2, 3)
 
-        testing('u.ensure')
+        testing('_.ensure')
         var a = {}
-        verify(u.ensure(a, 'b', 1, 'c', 5), 5)
-        verify(u.ensure(a, 'b', 0, 'd', 2), 2)
-        verify(u.deepEquals(a, {b:[{d:2},{c:5}]}))
+        verify(_.ensure(a, 'b', 1, 'c', 5), 5)
+        verify(_.ensure(a, 'b', 0, 'd', 2), 2)
+        verify(_.deepEquals(a, {b:[{d:2},{c:5}]}))
 
         testing('escape and unescape functions')
-        verify(u.escapeUnicodeChar('\u0345') == '\\u0345')
-        verify(u.escapeString('"hello"') == '\\"hello\\"')
-        verify(u.escapeRegExp('.') == '\\.')
-        verify(u.escapeUrl(' ') == '%20')
-        verify(u.unescapeUrl('%20') == ' ')
-        verify(u.escapeXml('<') == '&lt;')
-        verify(u.unescapeXml('&lt;') == '<')
+        verify(_.escapeUnicodeChar('\u0345') == '\\u0345')
+        verify(_.escapeString('"hello"') == '\\"hello\\"')
+        verify(_.escapeRegExp('.') == '\\.')
+        verify(_.escapeUrl(' ') == '%20')
+        verify(_.unescapeUrl('%20') == ' ')
+        verify(_.escapeXml('<') == '&lt;')
+        verify(_.unescapeXml('&lt;') == '<')
 
         testing('old tests')
         var x = [["a", 5], ["b", 6]]
-        var y = u.unPairs(x)
+        var y = _.unPairs(x)
         verify(y.a == 5 && y.b == 6)
 
         var x = {}
-        u.ensure(x, "a", "b", 0, "c", 1)
+        _.ensure(x, "a", "b", 0, "c", 1)
         verify(x.a.b[0].c == 1)
 
         var a = {}
         a.b = a
-        verify(u.json(a).match(/cycle_root/))
-        verify(!u.json(a).match(/\n/))
-        verify(u.json(a, true).match(/\n/))
+        verify(_.json(a).match(/cycle_root/))
+        verify(!_.json(a).match(/\n/))
+        verify(_.json(a, true).match(/\n/))
 
-        var x = u.unJson(u.json(a))
+        var x = _.unJson(_.json(a))
         verify(x.b == x)
 
-        u.dialog($('<div style="width:400px;height:400px"/>').append(u.splitHorz(30,
+        _.dialog($('<div style="width:400px;height:400px"/>').append(_.splitHorz(30,
             $('<button>ok</button>').click(function () {
-                u.closeDialog()
+                _.closeDialog()
             }),
-            u.splitVert(50,
+            _.splitVert(50,
                 $('<div/>').text('tests passed!'),
                 $('<div/>').text('yup..')
             )
