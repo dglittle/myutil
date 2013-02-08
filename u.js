@@ -119,6 +119,24 @@ u.unPairs = function (a) {
     return accum
 }
 
+u.min = function (o, func) {
+    var accum = null
+    u.each(o, function (v) {
+        if (accum === null || v < accum)
+            accum = v
+    })
+    return accum
+}
+
+u.max = function (o, func) {
+    var accum = null
+    u.each(o, function (v) {
+        if (accum === null || v > accum)
+            accum = v
+    })
+    return accum
+}
+
 u.setAdd = function (s, key) {
     if (!u.has(s, key) || !s[key])
         return s[key] = true

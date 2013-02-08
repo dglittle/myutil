@@ -95,6 +95,12 @@ $(function () {
         verify(u.deepEquals(u.unPairs([['0', 1], ['1', 4], ['2', 9]]), {'0':1, '1':4, '2':9}))
         verify(u.deepEquals(u.unPairs([['a', 1], ['b', 4], ['c', 9]]), {a:1, b:4, c:9}))
 
+        testing('u.min')
+        verify(u.min([4, 2, 8]) == 2)
+
+        testing('u.max')
+        verify(u.max([4, 2, 16, 8]) == 16)
+
         testing('u.setAdd')
         var s = {a:false}
         verify(u.setAdd(s, 'a') === true)
