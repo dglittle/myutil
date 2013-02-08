@@ -291,8 +291,23 @@ _.unescapeXml = function (s) {
     })
 }
 
-_.splitHorz = function (percent, a, b) {
-    var t = $('<table style="width:100%;height:100%"><tr><td class="a" width="' + percent + '%"></td><td class="b" width="' + (100 - percent) + '%"></td></tr></table>')
+function splitSizeHelper(prefix, size) {
+    if (size == null) return ""
+    if (size <= 1) return prefix + '="' + Math.round(100 * size) + '%"'
+    return prefix + '="' + size + 'px"'
+}
+
+_.splitHorz = function (aSize, bSize, a, b) {
+    if (arguments.length == 3) {
+        // backwards compatibility
+        b = a
+        a = bSize
+        aSize = aSize / 100
+        bSize = null
+    }
+    aSize = splitSizeHelper('width', aSize)
+    bSize = splitSizeHelper('width', bSize)
+    var t = $('<table style="width:100%;height:100%"><tr valign="top"><td class="a" ' + aSize + '></td><td class="b" ' + bSize + '></td></tr></table>')
     // don't do this:
     // t.find('.a').append(a)
     // t.find('.b').append(b)
@@ -303,8 +318,17 @@ _.splitHorz = function (percent, a, b) {
     return t
 }
 
-_.splitVert = function (percent, a, b) {
-    var t = $('<table style="width:100%;height:100%"><tr><td class="a" height="' + percent + '%"></td></tr><tr><td class="b" height="' + (100 - percent) + '%"></td></tr></table>')
+_.splitVert = function (aSize, bSize, a, b) {
+    if (arguments.length == 3) {
+        // backwards compatibility
+        b = a
+        a = bSize
+        aSize = aSize / 100
+        bSize = null
+    }
+    aSize = splitSizeHelper('height', aSize)
+    bSize = splitSizeHelper('height', bSize)
+    var t = $('<table style="width:100%;height:100%"><tr valign="top"><td class="a" ' + aSize + '></td></tr><tr valign="top"><td class="b" ' + bSize + '></td></tr></table>')
     // don't do this:
     // t.find('.a').append(a)
     // t.find('.b').append(b)
