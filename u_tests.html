@@ -148,6 +148,15 @@ $(function () {
         verify(_.sample([2, 4, 8]) % 2 == 0)
         verify(_.sample({a:1, b:3, c:7}) % 2 == 1)
 
+        testing('_.shuffle')
+        var a = [1, 2, 3, 4, 5]
+        var count = 0
+        for (var i = 0; i < 100; i++) {
+            _.shuffle(a)
+            if (a[0] == 3) count++
+        }
+        verify(count > 2 && count < 98)
+
         testing('_.toArray')
         function func() {
             verify(_.deepEquals(_.toArray(arguments), [1, 2, 3]))

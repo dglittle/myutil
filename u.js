@@ -201,6 +201,16 @@ _.sample = function (o) {
         return _.sample(_.values(o))
 }
 
+_.shuffle = function (a) {
+    for (var i = 0; i < a.length; i++) {
+        var ri = Math.floor(a.length * Math.random())
+        var temp = a[i]
+        a[i] = a[ri]
+        a[ri] = temp
+    }
+    return a
+}
+
 _.toArray = function (a) {
     var accum = []
     for (var i = 0; i < a.length; i++)
