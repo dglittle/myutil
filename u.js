@@ -154,6 +154,15 @@ _.unPairs = function (a) {
     return accum
 }
 
+_.pick = function(o) {
+    var accum = {}
+    for (var i = 1; i < arguments.length; i++) {
+        var k = arguments[i]
+        if (k in o) accum[k] = o[k]
+    }
+    return accum
+}
+
 _.setAdd = function (s, key) {
     if (!_.has(s, key) || !s[key])
         return s[key] = true
