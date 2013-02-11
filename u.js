@@ -138,6 +138,13 @@ _.values = function (o) {
     return accum
 }
 
+_.extend = function (o, that) {
+    _.each(that, function (v, k) {
+        o[k] = v
+    })
+    return o
+}
+
 _.pairs = function (o) {
     var accum = []
     _.each(o, function (v, k) {

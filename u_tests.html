@@ -99,6 +99,9 @@ $(function () {
         verify(_.deepEquals(_.values([1, 4, 9]), [1, 4, 9]))
         verify(_.deepEquals(_.values({a:1, b:4, c:9}), [1, 4, 9]))
 
+        testing('_.extend')
+        verify(_.deepEquals(_.extend({a:1}, {b:4, c:9}), {a:1, b:4, c:9}))
+
         testing('_.pairs')
         verify(_.deepEquals(_.pairs([1, 4, 9]), [[0, 1], [1, 4], [2, 9]]))
         verify(_.deepEquals(_.pairs({a:1, b:4, c:9}), [['a', 1], ['b', 4], ['c', 9]]))
