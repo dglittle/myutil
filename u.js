@@ -153,11 +153,17 @@ _.pairs = function (o) {
     return accum
 }
 
-_.unPairs = function (a) {
+_.object = _.unPairs = function (a, b) {
     var accum = {}
-    _.each(a, function (e) {
-        accum[e[0]] = e[1]
-    })
+    if (b) {
+        _.each(a, function (k, i) {
+            accum[k] = b[i]
+        })
+    } else {
+        _.each(a, function (e) {
+            accum[e[0]] = e[1]
+        })
+    }
     return accum
 }
 
