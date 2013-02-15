@@ -329,7 +329,8 @@ function splitSizeHelper(prefix, size) {
     return prefix + '="' + size + 'px"'
 }
 
-_.splitHorz = function (aSize, bSize, a, b) {
+_.splitHorz = function (aSize, bSize, a, b, fill) {
+    if (fill === undefined) fill = true
     if (arguments.length == 3) {
         // backwards compatibility
         b = a
@@ -339,7 +340,7 @@ _.splitHorz = function (aSize, bSize, a, b) {
     }
     aSize = splitSizeHelper('width', aSize)
     bSize = splitSizeHelper('width', bSize)
-    var t = $('<table style="width:100%;height:100%"><tr valign="top"><td class="a" ' + aSize + '></td><td class="b" ' + bSize + '></td></tr></table>')
+    var t = $('<table ' + (fill ? 'style="width:100%;height:100%"' : '') + '><tr valign="top"><td class="a" ' + aSize + '></td><td class="b" ' + bSize + '></td></tr></table>')
     // don't do this:
     // t.find('.a').append(a)
     // t.find('.b').append(b)
@@ -350,7 +351,8 @@ _.splitHorz = function (aSize, bSize, a, b) {
     return t
 }
 
-_.splitVert = function (aSize, bSize, a, b) {
+_.splitVert = function (aSize, bSize, a, b, fill) {
+    if (fill === undefined) fill = true
     if (arguments.length == 3) {
         // backwards compatibility
         b = a
@@ -360,7 +362,7 @@ _.splitVert = function (aSize, bSize, a, b) {
     }
     aSize = splitSizeHelper('height', aSize)
     bSize = splitSizeHelper('height', bSize)
-    var t = $('<table style="width:100%;height:100%"><tr valign="top"><td class="a" ' + aSize + '></td></tr><tr valign="top"><td class="b" ' + bSize + '></td></tr></table>')
+    var t = $('<table ' + (fill ? 'style="width:100%;height:100%"' : '') + '><tr valign="top"><td class="a" ' + aSize + '></td></tr><tr valign="top"><td class="b" ' + bSize + '></td></tr></table>')
     // don't do this:
     // t.find('.a').append(a)
     // t.find('.b').append(b)

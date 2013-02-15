@@ -209,8 +209,8 @@ $(function () {
                 _.closeDialog()
             }),
             _.splitVert(50,
-                $('<div/>').text('tests passed!'),
-                $('<div/>').text('yup..')
+                _.splitHorz(null, null, $('<div style="border:1px solid black"/>').text('tests'), $('<div style="border:1px solid green"/>').text('passed!'), 0),
+                _.splitVert(null, null, $('<div style="border:1px solid lightgrey"/>').text('yup..'), $('<div/>').text('yup..'), 0)
             )
         )))
     } catch (e) {
