@@ -167,12 +167,22 @@ _.object = _.unPairs = function (a, b) {
     return accum
 }
 
-_.pick = function(o) {
+_.pick = function (o) {
     var accum = {}
     for (var i = 1; i < arguments.length; i++) {
         var k = arguments[i]
-        if (k in o) accum[k] = o[k]
+        if (_.has(o, k)) accum[k] = o[k]
     }
+    return accum
+}
+
+_.omit = function (o) {
+    var omits = _.makeSet(_.toArray(arguments).slice(1))
+    var accum = {}
+    _.each(o, function (v, k) {
+        if (!_.has(omits, k))
+            accum[k] = v
+    })
     return accum
 }
 

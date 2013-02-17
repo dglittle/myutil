@@ -115,6 +115,10 @@ $(function () {
 
         testing('_.pick')
         verify(_.deepEquals(_.pick({a:1, b:4, c:9}, 'c', 'b'), {c:9,b:4}))
+        verify(_.deepEquals(_.pick({a:1, b:4, c:9}, 'c', 'b', 'toString'), {c:9,b:4}))
+
+        testing('_.omit')
+        verify(_.deepEquals(_.omit({a:1, b:4, c:9}, 'b'), {a:1,c:9}))
 
         testing('_.setAdd')
         var s = {a:false}
