@@ -43,7 +43,15 @@ $(function () {
         _.each([1, 4, 9], function (v, k) {
             s += '' + v + k
         })
-        verify(s == "1a4b9c104192")
+        _.each([1, 4, 9], function (v, k) {
+            s += '' + v + k
+            if (v == 4) return false
+        })
+        _.each({ a : 1, b : 4, c : 9 }, function (v, k) {
+            s += v + k
+            if (v == 4) return false
+        })
+        verify(s == "1a4b9c10419210411a4b")
 
         testing('_.size')
         var a = []
@@ -90,6 +98,10 @@ $(function () {
         verify(_.max([4, 2, 16, 8], function (e) { return -e }) == 2)
         verify(_.max([4, 2, 16, 8]) == 16)
         verify(_.max(['1', '2', '11'], function (e) { return 1 * e }) === '11')
+
+        testing('_.find')
+        verify(_.find([4, 2, 16, 8], function (e) { return e / 4 == 4 }) == 16)
+        verify(_.find({a:false, b:5, c:false}) == 5)
 
         testing('_.keys')
         verify(_.deepEquals(_.keys([1, 4, 9]), ['0', '1', '2']))

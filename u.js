@@ -20,11 +20,17 @@ _.has = function (o, k) {
 _.identity = function (e) { return e }
 
 _.each = function (o, func) {
-    if (o instanceof Array)
-        return o.forEach(func)
-    for (var k in o)
-        if (o.hasOwnProperty(k))
-            func(o[k], k)
+    if (!func) func = _.identity
+    if (o instanceof Array) {
+        for (var i = 0; i < o.length; i++)
+            if (func(o[i], i) == false)
+                break
+    } else {
+        for (var k in o)
+            if (o.hasOwnProperty(k))
+                if (func(o[k], k) == false)
+                    break
+    }
 }
 
 _.map = function (o, func) {
@@ -107,6 +113,18 @@ _.max = function (o, func) {
         }
     })
     return best
+}
+
+_.find = function (o, func) {
+    if (!func) func = _.identity
+    var found = null
+    _.each(o, function (v, k) {
+        if (func(v, k)) {
+            found = v
+            return false
+        }
+    })
+    return found
 }
 
 _.size = function (o) {
