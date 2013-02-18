@@ -149,8 +149,10 @@ $(function () {
         var b = {}
         _.bagAdd(b, 'a')
         _.bagAdd(b, 'b')
-        _.bagAdd(b, 'a')
-        verify(_.deepEquals(b, {b:1,a:2}))
+        _.bagAdd(b, 'a', 2)
+        verify(_.deepEquals(b, {b:1,a:3}))
+        _.bagAdd(b, 'b', -1)
+        verify(_.deepEquals(b, {b:0,a:3}))
 
         testing('_.lerp')
         verify(_.lerp(0, 0, 1, 1, .5) == .5)

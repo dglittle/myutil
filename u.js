@@ -218,10 +218,12 @@ _.makeSet = function (a) {
     return s
 }
 
-_.bagAdd = function (bag, key) {
+_.bagAdd = function (bag, key, amount) {
+    if (amount == null) amount = 1
     if (!_.has(bag, key))
         bag[key] = 0
-    return ++bag[key]
+    bag[key] += amount
+    return bag[key]
 }
 
 _.lerp = function (t0, v0, t1, v1, t) {
