@@ -218,6 +218,10 @@ _.makeSet = function (a) {
     return s
 }
 
+_.inSet = function (s, x) {
+    return _.has(s, x) && s[x]
+}
+
 _.bagAdd = function (bag, key, amount) {
     if (amount == null) amount = 1
     if (!_.has(bag, key))

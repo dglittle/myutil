@@ -145,6 +145,11 @@ $(function () {
         verify(_.deepEquals(_.makeSet(['a', 'b']), {a:true, b:true}))
         verify(_.deepEquals(_.makeSet({'a':'b','c':'d'}), {b:true,d:true}))
 
+        testing('_.inSet')
+        verify(_.inSet({a:true,b:false}, 'b') == false)
+        verify(_.inSet({a:true}, 'b') == false)
+        verify(_.inSet({a:true}, 'a') == true)
+
         testing('_.bagAdd')
         var b = {}
         _.bagAdd(b, 'a')
