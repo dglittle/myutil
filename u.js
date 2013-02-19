@@ -222,6 +222,15 @@ _.inSet = function (s, x) {
     return _.has(s, x) && s[x]
 }
 
+_.setSub = function (a, b) {
+    var c = {}
+    _.each(a, function (v, k) {
+        if (!_.inSet(b, k))
+            c[k] = v
+    })
+    return c
+}
+
 _.bagAdd = function (bag, key, amount) {
     if (amount == null) amount = 1
     if (!_.has(bag, key))
