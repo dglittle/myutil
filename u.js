@@ -156,11 +156,19 @@ _.values = function (o) {
     return accum
 }
 
-_.extend = function (o, that) {
+_.merge = _.extend = function (o, that) {
     _.each(that, function (v, k) {
         o[k] = v
     })
     return o
+}
+
+_.clone = function (o) {
+    if (o instanceof Array) {
+        return o.slice(0)
+    } else {
+        return _.merge({}, o)
+    }
 }
 
 _.pairs = function (o) {

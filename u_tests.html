@@ -113,6 +113,15 @@ $(function () {
 
         testing('_.extend')
         verify(_.deepEquals(_.extend({a:1}, {b:4, c:9}), {a:1, b:4, c:9}))
+        verify(_.deepEquals(_.merge({a:1, b:4}, {c:9}), {a:1, b:4, c:9}))
+
+        testing('_.clone')
+        var a = {a:1, b:4, c:9}
+        var b = _.clone(a)
+        verify(a != b && _.deepEquals(a, b))
+        var a = [1, 4, 9]
+        var b = _.clone(a)
+        verify(a != b && _.deepEquals(a, b))
 
         testing('_.pairs')
         verify(_.deepEquals(_.pairs([1, 4, 9]), [[0, 1], [1, 4], [2, 9]]))
