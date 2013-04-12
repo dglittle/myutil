@@ -192,6 +192,7 @@ _.run(function () {
     testing('_.sort / _.sortBy')
     var x = [{a:4}, {a:6}, {a:2}, {a:3}, {a:1}, {a:9}]
     verify(_.deepEquals(_.sort(x, function (e) { return e.a }), [{a:1}, {a:2}, {a:3}, {a:4}, {a:6}, {a:9}]))
+    verify(_.deepEquals(_.sortDesc(x, function (e) { return e.a }), [{a:9}, {a:6}, {a:4}, {a:3}, {a:2}, {a:1}]))
 
     testing('_.toArray')
     function func() {

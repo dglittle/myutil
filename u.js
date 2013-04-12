@@ -284,7 +284,7 @@ _.shuffle = function (a) {
     return a
 }
 
-_.sort = _.sortBy = function (a, func) {
+_.sort = _.sortBy = function (a, func, desc) {
     if (!func) func = _.identity
     return _.map(_.map(a, function (e, i) {
         return {
@@ -292,10 +292,14 @@ _.sort = _.sortBy = function (a, func) {
             f : func(e, i)
         }
     }).sort(function (a, b) {
-        if (a.f < b.f) return -1
-        if (a.f > b.f) return 1
+        if (a.f < b.f) return desc ? 1 : -1
+        if (a.f > b.f) return desc ? -1 : 1
         return 0
     }), function (e) { return e.v })
+}
+
+_.sortDesc = function (a, func) {
+    return _.sort(a, func, true)
 }
 
 _.toArray = function (a) {
