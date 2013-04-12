@@ -284,6 +284,20 @@ _.shuffle = function (a) {
     return a
 }
 
+_.sort = _.sortBy = function (a, func) {
+    if (!func) func = _.identity
+    return _.map(_.map(a, function (e, i) {
+        return {
+            v : e,
+            f : func(e, i)
+        }
+    }).sort(function (a, b) {
+        if (a.f < b.f) return -1
+        if (a.f > b.f) return 1
+        return 0
+    }), function (e) { return e.v })
+}
+
 _.toArray = function (a) {
     var accum = []
     for (var i = 0; i < a.length; i++)
