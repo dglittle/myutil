@@ -189,6 +189,12 @@ _.run(function () {
     }
     verify(count > 2 && count < 98)
 
+    testing('_.randomString')
+    var x = _.randomString(5, /a/)
+    verify(x == 'aaaaa')
+    var x = _.randomString(20, /[a-qP-Z2-9]/)
+    verify(x.match(/^[a-qP-Z2-9]{20}$/))
+
     testing('_.sort / _.sortBy')
     var x = [{a:4}, {a:6}, {a:2}, {a:3}, {a:1}, {a:9}]
     verify(_.deepEquals(_.sort(x, function (e) { return e.a }), [{a:1}, {a:2}, {a:3}, {a:4}, {a:6}, {a:9}]))

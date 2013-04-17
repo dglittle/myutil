@@ -284,6 +284,20 @@ _.shuffle = function (a) {
     return a
 }
 
+_.randomString = function (len, re) {
+    re = re || /[a-zA-Z0-1]/
+    var chars = []
+    for (var i = 0; i < 256; i++) {
+        var c = String.fromCharCode(i)
+        if (c.match(re)) chars.push(c)
+    }
+    var ret = []
+    for (var i = 0; i < len; i++) {
+        ret.push(chars[Math.floor(Math.random() * chars.length)])
+    }
+    return ret.join('')
+}
+
 _.sort = _.sortBy = function (a, func, desc) {
     if (!func) func = _.identity
     return _.map(_.map(a, function (e, i) {
