@@ -285,7 +285,7 @@ _.shuffle = function (a) {
 }
 
 _.randomString = function (len, re) {
-    re = re || /[a-zA-Z0-1]/
+    re = re || /[a-zA-Z0-9]/
     var chars = []
     for (var i = 0; i < 256; i++) {
         var c = String.fromCharCode(i)
